@@ -55,7 +55,14 @@ for(i in theme_element.options) {
 
 //Get password on page load
 
-var passwd = get_passwd("Password: ");
+var passwd_hash = "1f72aa6ba02b8744d4cf16ced844cbf557a44345";
+
+
+var passwd = localStorage.getItem("key");
+if(sha1("" + passwd) != passwd_hash) {
+	passwd = get_passwd("Password: ");
+	localStorage.setItem("key", passwd);
+}
 
 //Decrypt automatic text
 
@@ -136,4 +143,16 @@ document.getElementById("theme").onchange = (self) => {
 	var theme = self.target.options[self.target.selectedIndex].value;
 	document.getElementById("css-style").setAttribute("href", "themes/" + theme + ".css");
 	localStorage.setItem("theme", theme);
+}
+
+document.getElementById("sha1").onclick = () => {
+	var what = get_passwd("Password to hash: ")
+	var done = sha1("" + what);
+	navigator.clipboard.writeText(done);
+	alert(done);
+}
+
+document.getElementById("clear").onclick = () => {
+	localStorage.clear();
+	alert("Done!");
 }
