@@ -33,11 +33,29 @@ function get_passwd(text) {
 	return passwd_new;
 }
 
+//set theme on page load
+
+if(localStorage.getItem("theme") != null) {
+	var theme = localStorage.getItem("theme");
+} else {
+	localStorage.setItem("theme", "light");
+	var theme = "light";
+}
+
+document.getElementById("css-style").setAttribute("href", "themes/" + theme + ".css");
+
+var theme_element = document.getElementById("theme");
+for(i in theme_element.options) {
+	if(!isNaN(i)) {
+		if(theme_element.options[i].value == theme) {
+			theme_element.selectedIndex = i;
+		}
+	}
+}
+
 //Get password on page load
 
-
 var passwd = get_passwd("Password: ");
-
 
 //Decrypt automatic text
 
@@ -67,6 +85,26 @@ text.forEach(element => {
 		}
 		node.appendChild(document.createElement("br"));
 	});
+
+	var dev_button = document.createElement("button");
+	dev_button.setAttribute("style", "display: none;");
+	dev_button.setAttribute("class", "tools");
+	dev_button.setAttribute("data", text.indexOf(element));
+	dev_button.textContent = "Change password!";
+
+	dev_button.onclick = (self) => {
+		console.log(self.target.getAttribute("data"));
+
+		var new_passwd = get_passwd("New password: ");
+
+		var done = recrypt(text[self.target.getAttribute("data")], new_passwd, passwd);
+		navigator.clipboard.writeText(done);
+		alert(done);
+	};
+
+
+	node.appendChild(dev_button);
+	node.appendChild(document.createElement("br"));
 	node.appendChild(document.createElement("br"));
 	document.getElementById("text").appendChild(node);
 });
@@ -87,9 +125,15 @@ document.getElementById("decrypt").onclick = () => {
 }
 
 document.getElementById("show").onclick = () => {
-	var t = document.getElementsByClassName("tools")
+	var t = document.getElementsByClassName("tools");
 
 	for(var i = 0; i < t.length; i++) {
 		t[i].setAttribute("style", "");
 	}
+}
+
+document.getElementById("theme").onchange = (self) => {
+	var theme = self.target.options[self.target.selectedIndex].value;
+	document.getElementById("css-style").setAttribute("href", "themes/" + theme + ".css");
+	localStorage.setItem("theme", theme);
 }

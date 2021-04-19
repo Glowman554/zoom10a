@@ -3,22 +3,11 @@
 	<head>
 		<script defer src="index.js"></script>
 
-		<style>
-			button {
-				color: white;
-				border-radius: 3%;
-				background-color: #1f1f1f;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				border: none;
-				padding: 10px;
-			}
-		</style>
+		<link id="css-style" rel="stylesheet" type="text/css" href="themes/light.css">
 
 		<title>Zoom 10a</title>
 	</head>
-	<body style="font-family: Arial, Helvetica, sans-serif;">
+	<body>
 		<h1>Zoom 10a</h1>
 		<br>
 		<div id="text"></div>
@@ -26,8 +15,17 @@
 
 		<footer>
 
+			<div>
+				<p style="display: inline;">Select theme: </p>
+				<select id="theme">
+					<option>light</option>
+					<option>dark</option>
+				</select>
+			</div>
 
-			<div id="control">
+			<br>
+
+			<div id="control" style="display: inline;">
 				<button id="show">Show dev tools</button>
 				<button id="encrypt" class="tools" style="display: none;">Encrypt text</button>
 				<button id="decrypt" class="tools" style="display: none;">Decrypt text</button>
